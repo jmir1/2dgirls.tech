@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>2dgirls.tech</title>
+    <style>
+      body {
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+      }
+      .aligncenter {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <a id="logbtn"></a> | <a href="/list" id="listbtn">list</a> | <a href="/" id="homebtn">home</a>
+    <br><br>
+    <video controls style="width: 70%" id="video"></video>
+    <br><br>
+    <a id="update">update</a>
+    <script>
+      var mal_id = null;
+      var ep = null;
+      var max_ep = null;
+      var urlParams = new URLSearchParams(window.location.search);
+      if(urlParams.has('mal_id') && urlParams.has('ep') && urlParams.has('max_ep')) {
+        mal_id = urlParams.get('mal_id');
+        ep = urlParams.get('ep');
+        max_ep = urlParams.get('max_ep');
+      }
+      function logged_in() {
+        var episode_link = window.location.href.split('https://2dgirls.tech/watch/').pop();
+        document.getElementById('video').setAttribute('src', episode_link);
+        if(mal_id && ep && max_ep) document.getElementById('update').setAttribute('href', '/update?mal_id=' + mal_id + '&ep=' + ep + '&max_ep=' + max_ep);
+      }
+    </script>
+    <script src="/login.js"></script>
+  </body>
+</html>

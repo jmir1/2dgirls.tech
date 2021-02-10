@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>2dgirls.tech</title>
+    <style>
+      body {
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+      }
+      .aligncenter {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <a id="logbtn"></a> | <a href="/list" id="listbtn">list</a> | <a href="/" id="homebtn">home</a>
+    <br><br>
+    <video controls style="width: 100%" id="video"></video>
+    <script>
+      function logged_in() {
+        var episode_link = window.location.href.split('https://2dgirls.tech/watch/').pop();
+        console.log(episode_link);
+        document.getElementById('video').setAttribute('src', episode_link);
+        
+      }
+    </script>
+    <script src="/login.js"></script>
+  </body>
+</html>

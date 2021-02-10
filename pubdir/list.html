@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>2dgirls.tech</title>
+        <style>
+            body {
+                font-family: Tahoma, Verdana, Arial, sans-serif;
+            }
+            .aligncenter {
+                text-align: center;
+            }
+            img {
+                width: 100px
+            }
+        </style>
+<style>
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #f1f1f1;
+}
+</style>
+    </head>
+    <body>
+        <div id="foo"><a id="logbtn"></a>  | <a href="/" id="homebtn">home</a>
+        <br><br>
+        <h2 id="your_list">Your List</h2>
+
+
+        <button id="watching_btn" class="collapsible" style="display: none;">WATCHING</button>
+        <div class="content">
+          <ul class='watching' id='watching'></ul>
+        </div>
+
+        <button id="on_hold_btn" class="collapsible" style="display: none;">ON HOLD</button>
+        <div class="content">
+          <ul class='on_hold' id='on_hold'><ul></div>
+        </div>
+
+        <button id="plan_to_watch_btn" class="collapsible" style="display: none;">PLAN TO WATCH</button>
+        <div class="content">
+          <ul class='plan_to_watch' id='plan_to_watch'></ul>
+        </div>
+
+        <button id="dropped_btn" class="collapsible" style="display: none;">DROPPED</button>
+        <div class="content">
+          <ul class='dropped' id='dropped'></ul>
+        </div>
+
+        <button id="completed_btn" class="collapsible" style="display: none;">COMPLETED</button>
+        <div class="content">
+          <ul class='completed' id='completed'></ul>
+        </div>
+
+        <script src="/list.js"></script>
+        <script>
+          var coll = document.getElementsByClassName("collapsible");
+          var i;
+
+          for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+              this.classList.toggle("active");
+              var content = this.nextElementSibling;
+              if (content.style.maxHeight){
+                content.style.maxHeight = null;
+              } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+              } 
+            });
+          }
+        </script>
+    </body>
+</html>
