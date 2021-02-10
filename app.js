@@ -1,26 +1,27 @@
-var express = require('express'); // Express web server framework
-var request = require('request'); // "Request" library
-var cors = require('cors');
-var querystring = require('querystring');
-var cookieParser = require('cookie-parser');
-var cookieEncrypter = require('cookie-encrypter');
-var fs = require('fs');
-var http = require('http');
-var https = require('https');
-var bodyparser = require('body-parser');
-var privateKey  = fs.readFileSync('PATH_TO_MY_KEY', 'utf8');
-var certificate = fs.readFileSync('PATH_TO_MY_CERTIFICATE', 'utf8');
+require('dotenv').config();
+const express = require('express'); // Express web server framework
+const request = require('request'); // "Request" library
+const cors = require('cors');
+const querystring = require('querystring');
+const cookieParser = require('cookie-parser');
+const cookieEncrypter = require('cookie-encrypter');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+const bodyparser = require('body-parser');
+const privateKey  = fs.readFileSync(process.env.PRIVKEYPATH, 'utf8');
+const certificate = fs.readFileSync(process.env.CERTPATH, 'utf8');
 
-var credentials = {key: privateKey, cert: certificate};
+const credentials = {key: privateKey, cert: certificate};
 
-var cookie_secret = 'SECRET'; // secret for cookie_encypter
-var client_id = 'CLIENT_ID'; // Your MAL client id
-var client_secret = 'CLIENT_SECRET'; // Your MAL client secret
-var redirect_uri = 'https://2dgirls.tech/callback'; // Your redirect uri
+const cookie_secret = process.env.COOKIE_SECRET; // secret for cookie_encypter
+const client_id = process.env.CLIENT_ID; //Your client id
+const client_secret = process.env.CLIENT_SECRET; // Your secret
+const redirect_uri = 'https://2dgirls.tech/callback'; // Your redirect uri
 
-var generateRandomString = function(length) {
+const generateRandomString = function(length) {
   var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
   for (var i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -28,8 +29,8 @@ var generateRandomString = function(length) {
   return text;
 };
 
-var app = express();
-var pubdir = 'PUBLIC_DIRECTORY';
+const app = express();
+const pubdir = process.env.PUBDIR;
 
 app.use(express.static(pubdir))
    .use(cors())
@@ -125,7 +126,7 @@ app.get('/progress/*', function(req, res) {
 });
 
 function post_db(mal_id, id) {
-  var animedb = JSON.parse(fs.readFileSync('PATH_TO_JSON'));
+  var animedb = JSON.parse(fs.readFileSync('animedb.json'));
   animedb[mal_id] = {id: id};
   var options = {
       url: 'https://2dgirls.tech/api/details/' + id
@@ -134,7 +135,7 @@ function post_db(mal_id, id) {
     if (!error && response.statusCode === 200) {
       animedb[mal_id].animex = JSON.parse(body).results[0];
       var dbdata = JSON.stringify(animedb, null, 2);
-      fs.writeFileSync('PATH_TO_JSON', dbdata);
+      fs.writeFileSync('animedb.json', dbdata);
     } else {
       animedb[mal_id].animex = {error : body};
     }
@@ -143,7 +144,7 @@ function post_db(mal_id, id) {
 
 app.get('/db/*', function(req, res) {
   var key = req.path.split('/db/')[1];
-  var animedb = JSON.parse(fs.readFileSync('PATH_TO_JSON'));
+  var animedb = JSON.parse(fs.readFileSync('animedb.json'));
   if(animedb[key]) {
     res.send(animedb[key]);
   } else {
@@ -403,12 +404,11 @@ app.get('/refresh_token', function(req, res) {
 
 
 //404 handling:
-app.get('*', function(req, res){
+app.use(function (req, res, next) {
   res.status(404).sendFile(pubdir + '404.html');
-});
-
+})
 //var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
+const httpsServer = https.createServer(credentials, app);
 //console.log('Listening on 8080 and 8443');
 //httpServer.listen(8080);
 httpsServer.listen(8443);
