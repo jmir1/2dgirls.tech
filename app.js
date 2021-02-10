@@ -17,7 +17,7 @@ const credentials = {key: privateKey, cert: certificate};
 const cookie_secret = process.env.COOKIE_SECRET; // secret for cookie_encypter
 const client_id = process.env.CLIENT_ID; //Your client id
 const client_secret = process.env.CLIENT_SECRET; // Your secret
-const redirect_uri = 'https://2dgirls.tech/callback'; // Your redirect uri
+const redirect_uri = process.env.DOMAIN + '/callback'; // Your redirect uri
 
 const generateRandomString = function(length) {
   var text = '';
@@ -129,7 +129,7 @@ function post_db(mal_id, id) {
   var animedb = JSON.parse(fs.readFileSync('animedb.json'));
   animedb[mal_id] = {id: id};
   var options = {
-      url: 'https://2dgirls.tech/api/details/' + id
+      url: process.env.DOMAIN + '/api/details/' + id
     }; //this api is a different node.js server
   request.get(options, function(error, response, body) {
     if (!error && response.statusCode === 200) {
