@@ -9,10 +9,6 @@ const fs = require('fs');
 const http = require('http');
 const https = require('https');
 const bodyparser = require('body-parser');
-const privateKey  = fs.readFileSync(process.env.PRIVKEYPATH, 'utf8');
-const certificate = fs.readFileSync(process.env.CERTPATH, 'utf8');
-
-const credentials = {key: privateKey, cert: certificate};
 
 const cookie_secret = process.env.COOKIE_SECRET; // secret for cookie_encypter
 const client_id = process.env.CLIENT_ID; //Your client id
@@ -407,8 +403,6 @@ app.get('/refresh_token', function(req, res) {
 app.use(function (req, res, next) {
   res.status(404).sendFile(pubdir + '404.html');
 })
-//var httpServer = http.createServer(app);
-const httpsServer = https.createServer(credentials, app);
-//console.log('Listening on 8080 and 8443');
-//httpServer.listen(8080);
-httpsServer.listen(8443);
+var httpServer = http.createServer(app);
+console.log('Listening on 8080');
+httpServer.listen(8080);
