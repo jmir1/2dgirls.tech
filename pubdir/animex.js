@@ -120,11 +120,11 @@ function get_episode(mal_id, anime_id, episode) {
         if (this.readyState == 4 && this.status == 200) {
             result = JSON.parse(get_episode.responseText);
             //console.log(result);
-            if(mal_id && total_eps) {
-                var url = new URL(result.links[0].src);
-                var link = (url.search == '') ? result.links[0].src + "?mal_id=" + mal_id + "&ep=" + episode + "&max_ep=" + total_eps : result.links[0].src + "&mal_id=" + mal_id + "&ep=" + episode + "&max_ep=" + total_eps;
+            /*if(mal_id && total_eps) {
+                var url = new URL(result.links[0]);
+                var link = (url.search == '') ? result.links[0] + "?mal_id=" + mal_id + "&ep=" + episode + "&max_ep=" + total_eps : result.links[0] + "&mal_id=" + mal_id + "&ep=" + episode + "&max_ep=" + total_eps;
                 document.getElementById("ep_" + episode).innerHTML = "<a href='/watch/" + link + "'>Episode " + episode + "</a>";
-            } else document.getElementById("ep_" + episode).innerHTML = "<a href='/watch/" + result.links[0].src + "'>Episode " + episode + "</a>";
+            } else*/ document.getElementById("ep_" + episode).innerHTML = "<a href='/watch/" + result.links[0] + "'>Episode " + episode + "</a>";
         } else if (this.readyState == 4 && this.status == 400) {
             window.location = "/login";
         }
